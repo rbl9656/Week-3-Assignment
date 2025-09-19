@@ -146,15 +146,15 @@ Basic Usage:
 
 Run python main.py
 Wait for data extraction (takes ~5 minutes for full dataset)
-Search for quarterbacka in the time frame by name
+Search for quarterback in the time frame by name
 Choose whether to run AI analysis
 
 Example Session:
 🔍 Enter quarterback name: Josh Allen
 🤖 Run AI analysis? (y/n): y
 
-🤖 Analyzing Cam Newton with DeepSeek AI...
-💾 Enriched data saved to data/enriched/Cam_Newton_20241218_143045.csv
+🤖 Analyzing Josh Allen with DeepSeek AI...
+💾 Enriched data saved to data/enriched/Josh_Allen_20250918_163931.csv
 ✅ AI analysis complete!
 
 ============================================================
