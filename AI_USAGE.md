@@ -9,6 +9,7 @@ pasted long bug-fix edited output
 Prompt 4: Changes made to the sample time frame for the code are now working properly, apply changes to the remainder of the code
 
 Prompt 5: Here is an example output, edit the code so that the games stat for college is either not 0 or not included. Also Add in logic for NFL players to compute the Completion %, Yards per Attempt and TD/INT ratio:
+
 ============================================================
 PLAYER PROFILE: Will Levis
 ============================================================
