@@ -18,7 +18,7 @@ Why Add AI?
 Raw stats only tell part of the story. Russell Wilson had solid but not spectacular college numbers yet became a Pro Bowl QB. Meanwhile, Johnny Manziel dominated college but struggled in the NFL.
 The AI figures out WHY some players succeed when others don't.
 
-hat DeepSeek Adds:
+What DeepSeek Adds:
 
 Success Probability: 0-100% chance of NFL success based on college stats
 Pattern Recognition: Which college metrics actually matter for the pros
