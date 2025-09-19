@@ -4,8 +4,10 @@ import time
 from typing import Dict, List, Optional
 import json
 
+
 class DeepSeekEnricher:
-    """Uses DeepSeek AI to analyze QB performance and predict NFL success factors"""
+    """Uses DeepSeek AI to analyze QB performance and predict NFL success 
+    factors"""
     
     def __init__(self, api_key: str):
         self.api_key = api_key
@@ -15,7 +17,7 @@ class DeepSeekEnricher:
             "Content-Type": "application/json"
         }
         self.rate_limit_delay = 1.0  # Adjust based on API limits
-        
+
     def analyze_player(self, player_data: pd.Series) -> Dict[str, any]:
         """Analyze a single player using DeepSeek AI"""
         
@@ -33,12 +35,16 @@ class DeepSeekEnricher:
                 analysis = self._parse_response(response)
                 return {
                     'player_name': player_data.get('player_name', ''),
-                    'success_probability': analysis.get('success_probability', 0),
+                    'success_probability': analysis.get('success_probability', 
+                                                       0),
                     'key_strengths': analysis.get('key_strengths', []),
                     'key_weaknesses': analysis.get('key_weaknesses', []),
-                    'college_to_nfl_transition': analysis.get('college_to_nfl_transition', ''),
-                    'statistical_indicators': analysis.get('statistical_indicators', []),
-                    'overall_assessment': analysis.get('overall_assessment', ''),
+                    'college_to_nfl_transition': analysis.get(
+                        'college_to_nfl_transition', ''),
+                    'statistical_indicators': analysis.get(
+                        'statistical_indicators', []),
+                    'overall_assessment': analysis.get('overall_assessment', 
+                                                      ''),
                     'comparisons': analysis.get('comparisons', ''),
                     'development_areas': analysis.get('development_areas', [])
                 }
@@ -46,39 +52,51 @@ class DeepSeekEnricher:
                 return self._create_fallback_analysis(player_data)
                 
         except Exception as e:
-            print(f"Error analyzing {player_data.get('player_name', 'Unknown')}: {e}")
+            print(f"Error analyzing "
+                  f"{player_data.get('player_name', 'Unknown')}: {e}")
             return self._create_fallback_analysis(player_data)
-    
+
     def _format_player_stats(self, player_data: pd.Series) -> Dict:
         """Format player statistics for AI analysis"""
         return {
             'college_stats': {
                 'team': player_data.get('college_team', 'N/A'),
                 'conference': player_data.get('college_conference', 'N/A'),
-                'years_played': f"{player_data.get('college_start_year', 'N/A')}-{player_data.get('college_end_year', 'N/A')}",
-                'pass_attempts': int(player_data.get('college_pass_attempts', 0)),
-                'completions': int(player_data.get('college_pass_completions', 0)),
-                'completion_percentage': round(player_data.get('college_completion_pct', 0), 1),
+                'years_played': (f"{player_data.get('college_start_year', 'N/A')}"
+                               f"-{player_data.get('college_end_year', 'N/A')}"),
+                'pass_attempts': int(player_data.get('college_pass_attempts', 
+                                                   0)),
+                'completions': int(player_data.get('college_pass_completions', 
+                                                 0)),
+                'completion_percentage': round(
+                    player_data.get('college_completion_pct', 0), 1),
                 'pass_yards': int(player_data.get('college_pass_yards', 0)),
                 'touchdowns': int(player_data.get('college_pass_tds', 0)),
-                'interceptions': int(player_data.get('college_interceptions', 0)),
-                'td_int_ratio': round(player_data.get('college_td_int_ratio', 0), 2),
-                'yards_per_attempt': round(player_data.get('college_yards_per_attempt', 0), 1)
+                'interceptions': int(player_data.get('college_interceptions', 
+                                                   0)),
+                'td_int_ratio': round(
+                    player_data.get('college_td_int_ratio', 0), 2),
+                'yards_per_attempt': round(
+                    player_data.get('college_yards_per_attempt', 0), 1)
             },
             'nfl_stats': {
                 'games_played': int(player_data.get('nfl_games', 0)),
                 'pass_attempts': int(player_data.get('nfl_pass_attempts', 0)),
-                'completions': int(player_data.get('nfl_pass_completions', 0)),
-                'completion_percentage': round(player_data.get('nfl_completion_percentage', 0), 1),
+                'completions': int(player_data.get('nfl_pass_completions', 
+                                                 0)),
+                'completion_percentage': round(
+                    player_data.get('nfl_completion_percentage', 0), 1),
                 'pass_yards': int(player_data.get('nfl_pass_yards', 0)),
                 'touchdowns': int(player_data.get('nfl_pass_tds', 0)),
                 'interceptions': int(player_data.get('nfl_interceptions', 0)),
-                'td_int_ratio': round(player_data.get('nfl_td_int_ratio', 0), 2),
-                'yards_per_attempt': round(player_data.get('nfl_yards_per_attempt', 0), 1),
+                'td_int_ratio': round(
+                    player_data.get('nfl_td_int_ratio', 0), 2),
+                'yards_per_attempt': round(
+                    player_data.get('nfl_yards_per_attempt', 0), 1),
                 'qb_rating': round(player_data.get('nfl_qb_rating', 0), 1)
             }
         }
-    
+
     def _create_analysis_prompt(self, player_stats: Dict) -> str:
         """Create a comprehensive analysis prompt for DeepSeek AI"""
         return f"""
@@ -125,7 +143,7 @@ class DeepSeekEnricher:
         
         Focus on statistical analysis and avoid speculation about non-statistical factors. Be objective and data-driven.
         """
-    
+
     def _make_api_call(self, prompt: str) -> Optional[Dict]:
         """Make API call to DeepSeek"""
         
@@ -134,7 +152,11 @@ class DeepSeekEnricher:
             "messages": [
                 {
                     "role": "system",
-                    "content": "You are an expert NFL quarterback analyst specializing in statistical analysis of college-to-NFL transitions. Provide detailed, data-driven insights based solely on the provided statistics."
+                    "content": ("You are an expert NFL quarterback analyst "
+                               "specializing in statistical analysis of "
+                               "college-to-NFL transitions. Provide detailed, "
+                               "data-driven insights based solely on the "
+                               "provided statistics.")
                 },
                 {
                     "role": "user", 
@@ -159,7 +181,7 @@ class DeepSeekEnricher:
         except requests.exceptions.RequestException as e:
             print(f"API request failed: {e}")
             return None
-    
+
     def _parse_response(self, response: Dict) -> Dict:
         """Parse DeepSeek API response and extract analysis"""
         try:
@@ -193,7 +215,7 @@ class DeepSeekEnricher:
                 'comparisons': 'Comparison data unavailable',
                 'development_areas': ['Analysis incomplete']
             }
-    
+
     def _create_fallback_analysis(self, player_data: pd.Series) -> Dict:
         """Create basic rule-based analysis if API fails"""
         
@@ -207,11 +229,16 @@ class DeepSeekEnricher:
         
         # Calculate basic success probability
         success_score = 0
-        if college_completion_pct >= 60: success_score += 20
-        if college_td_int_ratio >= 2.0: success_score += 25
-        if college_ypa >= 7.5: success_score += 20
-        if nfl_games >= 16: success_score += 20  # Played at least one full season
-        if nfl_qb_rating >= 85: success_score += 15
+        if college_completion_pct >= 60:
+            success_score += 20
+        if college_td_int_ratio >= 2.0:
+            success_score += 25
+        if college_ypa >= 7.5:
+            success_score += 20
+        if nfl_games >= 16:  # Played at least one full season
+            success_score += 20
+        if nfl_qb_rating >= 85:
+            success_score += 15
         
         return {
             'player_name': player_data.get('player_name', ''),
@@ -219,12 +246,14 @@ class DeepSeekEnricher:
             'key_strengths': self._identify_strengths(player_data),
             'key_weaknesses': self._identify_weaknesses(player_data),
             'college_to_nfl_transition': self._assess_transition(player_data),
-            'statistical_indicators': ['Completion percentage', 'TD/INT ratio', 'Yards per attempt'],
-            'overall_assessment': 'Analysis generated using fallback rule-based system',
+            'statistical_indicators': ['Completion percentage', 'TD/INT ratio', 
+                                     'Yards per attempt'],
+            'overall_assessment': ('Analysis generated using fallback '
+                                 'rule-based system'),
             'comparisons': 'Statistical comparison unavailable',
             'development_areas': ['Accuracy', 'Decision-making', 'Arm strength']
         }
-    
+
     def _identify_strengths(self, player_data: pd.Series) -> List[str]:
         """Identify strengths based on statistical thresholds"""
         strengths = []
@@ -239,7 +268,7 @@ class DeepSeekEnricher:
             strengths.append('High NFL passer rating')
         
         return strengths if strengths else ['Statistical analysis incomplete']
-    
+
     def _identify_weaknesses(self, player_data: pd.Series) -> List[str]:
         """Identify weaknesses based on statistical thresholds"""
         weaknesses = []
@@ -250,11 +279,13 @@ class DeepSeekEnricher:
             weaknesses.append('Poor TD/INT ratio')
         if player_data.get('college_yards_per_attempt', 0) < 7.0:
             weaknesses.append('Low yards per attempt')
-        if player_data.get('nfl_qb_rating', 0) < 80 and player_data.get('nfl_qb_rating', 0) > 0:
+        if (player_data.get('nfl_qb_rating', 0) < 80 and 
+            player_data.get('nfl_qb_rating', 0) > 0):
             weaknesses.append('Struggled in NFL transition')
         
-        return weaknesses if weaknesses else ['No major statistical weaknesses identified']
-    
+        return (weaknesses if weaknesses 
+                else ['No major statistical weaknesses identified'])
+
     def _assess_transition(self, player_data: pd.Series) -> str:
         """Assess college to NFL transition"""
         nfl_games = player_data.get('nfl_games', 0)
@@ -270,7 +301,7 @@ class DeepSeekEnricher:
             return "Moderate NFL success"
         else:
             return "Struggled in NFL transition"
-    
+
     def enrich_dataset(self, df: pd.DataFrame) -> pd.DataFrame:
         """Enrich entire dataset with AI analysis"""
         print(f"Starting DeepSeek analysis for {len(df)} players...")
@@ -278,7 +309,8 @@ class DeepSeekEnricher:
         enriched_data = []
         
         for idx, player in df.iterrows():
-            print(f"Analyzing player {idx + 1}/{len(df)}: {player.get('player_name', 'Unknown')}")
+            print(f"Analyzing player {idx + 1}/{len(df)}: "
+                  f"{player.get('player_name', 'Unknown')}")
             
             # Get AI analysis
             analysis = self.analyze_player(player)
